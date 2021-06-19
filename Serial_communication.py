@@ -12,11 +12,15 @@ ports=[]
 
                     ########## detecting availables ports#########
 
-#for win systems (just for testing)
 def ports_availables() :
-    p= serial.tools.list_ports.comports()
+    
+    #for win systems (just for testing)
+    p = serial.tools.list_ports.comports()
     for port, desc, hwid in sorted(p):
-        ports.append(port)
+        if  desc == "Arduino Uno ("+str(port)+")" :
+        
+            ports.append(port)
+        
     return(ports)
     # for linux core :
     #sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
@@ -30,8 +34,6 @@ def connect(ports):
     bytesize=8
     #parity=PARITY_ODD
     #stopbits=STOPBITS_ONE
-    
-    
     for port in ports :
         try:
             port = serial.Serial(port,baudrate,bytesize)
@@ -39,12 +41,17 @@ def connect(ports):
         except:
             print('faile')
 
-            
-            
-ports=ports_availables()
-connect(ports)    
-print(port)
+       
 
-while True :
-    data=(port.readline()).decode()
-    print(data)
+
+
+ports=ports_availables()
+print(ports)
+connect(ports)    
+try:
+    while True :
+        if port.in_waiting :
+            data=(port.readline()).decode()
+            print(data)
+except KeyboardInterrup :
+        pass
