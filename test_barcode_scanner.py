@@ -6,7 +6,7 @@ import glob
 ports=[]
 # for linux core :
 if sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
-    ports = glob.glob('/dev/tty[A-Za-z]*')
+    ports = serial.tools.list_ports.comports()
 
 for port, desc, hwid in sorted(ports):
     print(port)
