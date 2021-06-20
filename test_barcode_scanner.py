@@ -5,8 +5,9 @@ import glob
 # initialisation 
 ports=[]
 # for linux core :
-ports = serial.tools.list_ports.comports()
-print(ports)
+if sys.platform.startswith('linux') or sys.platform.startswith('cygwin'):
+    ports = serial.tools.list_ports.comports()
+    print(ports)
 
 for port, desc, hwid in sorted(ports):
     print(port)
